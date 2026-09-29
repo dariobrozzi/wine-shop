@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_15_134255) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_16_012210) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -39,6 +39,30 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_15_134255) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "countries", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "iso2", limit: 2
+    t.string "iso3", limit: 3
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "departments", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.integer "province_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["province_id"], name: "index_departments_on_province_id"
+  end
+
+  create_table "districts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "department_id", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.index ["department_id"], name: "index_districts_on_department_id"
+  end
+
   create_table "products", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "description"
@@ -47,6 +71,28 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_15_134255) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "provinces", force: :cascade do |t|
+    t.integer "country_id", null: false
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.index ["country_id"], name: "index_provinces_on_country_id"
+  end
+
+  create_table "wineries", force: :cascade do |t|
+    t.string "address"
+    t.datetime "created_at", null: false
+    t.integer "district_id", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.string "website"
+    t.index ["district_id"], name: "index_wineries_on_district_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "departments", "provinces"
+  add_foreign_key "districts", "departments"
+  add_foreign_key "provinces", "countries"
+  add_foreign_key "wineries", "districts"
 end

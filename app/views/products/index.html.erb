@@ -1,16 +1,47 @@
-<p style="color: green"><%#= notice %></p>
+<%= turbo_stream_from "products" %>
+<%= turbo_refreshes_with method: :morph, scroll: :preserve %>
 
-<%# content_for :title, "Products" %>
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Products" %>
 
 <h1>Products</h1>
 
-<div id="products">
-  <% @products.each do |product| %>
-    <%= render product %>
-    <p>
-      <%#= link_to "Show this product", product %>
-    </p>
-  <% end %>
-</div>
+<table id="products">
+    <tbody>
+    <% @products.each do |product| %>
+        <tr id="<%= dom_id product %>">
+            <td>
+              <%= image_tag(product.image, alt: product.title, height: '120px') if product.image.present? %>
+            </td>
+          <td>
+            <h1><%= product.title %></h1>
+            <p><%= truncate(strip_tags(product.description), length: 80) %></p>
+          </td>
+          <td>
+            <%= number_to_currency(product.price) %>
+          </td>
+          <td>
+              <ul>
+                  <li>
+                      <%= link_to "Show",
+                          product %>
+                  </li>
+                  <li>
+                      <%= link_to 'Edit',
+                          edit_product_path(product) %>
+                  </li>
+                  <li>
+                      <%= button_to 'Destroy',
+                          product,
+                          method: :delete,
+                          data: { turbo_confirm: "Are you sure?" } %>
+                  </li>
+              </ul>
+          </td>
+        </tr>
+    <% end %>
+    </tbody>
+</table>
 
 <%= link_to "New product", new_product_path %>

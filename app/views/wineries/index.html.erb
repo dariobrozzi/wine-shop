@@ -1,0 +1,43 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Wineries" %>
+
+<h1>Wineries</h1>
+
+<table id="wineries">
+    <thead>
+        <th>
+            Name
+        </th>
+        <th>
+            Address
+        </th>
+        <th>
+            Website
+        </th>
+        <th>
+            Actions
+        </th>
+    </thead>
+    <tbody>
+    <% @wineries.each do |winery| %>
+      <tr>
+          <td>
+              <%= winery.name %>
+          </td>
+          <td>
+              <%= winery.address %>
+              &middot;
+              <%= winery.district.name %>
+          </td>
+          <td>
+              <%= link_to "Web", "https://www.#{winery.website}/", target: "_blank" %></td>
+          <td>
+              <%= link_to "Show", winery %>
+          </td>
+      </tr>
+    <% end %>
+    </tbody>
+</table>
+
+<%= link_to "New winery", new_winery_path %>

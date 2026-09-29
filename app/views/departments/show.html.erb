@@ -1,0 +1,32 @@
+<p style="color: green"><%= notice %></p>
+
+<h1><%= @department.name %></h1>
+
+<div>
+  <%= link_to "Edit", edit_department_path(@department) %> |
+  <%= link_to "Back to departments", departments_path %>
+
+  <%= button_to "Destroy", @department, method: :delete %>
+</div>
+
+
+<h3>Districts of <%= @department.name %></h3>
+
+<table>
+    <thead>
+        <th>Name</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
+<% @department.districts.each do |district| %>
+    <tr>
+        <td>
+            <%= district.name %>
+        </td>
+        <td>
+            <%= link_to "Show", district %>
+        </td>
+    </tr>
+<% end %>
+    </tbody>
+</table>
